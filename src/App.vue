@@ -23,4 +23,11 @@ body, html {
   padding: 0;
   margin: 0;
 }
+@font-face {
+    font-family: "NunitoSans";
+    src: url('../src/assets/NunitoSans.ttf') format("truetype");
+}
+#app {
+  font-family: NunitoSans;
+}
 </style>

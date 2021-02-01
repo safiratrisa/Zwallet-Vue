@@ -1,13 +1,13 @@
 <template>
-    <StatusComp/>
+    <TopupComp/>
 </template>
 
 <script>
-import StatusComp from '../../../components/module/status'
+import TopupComp from '../../../components/module/topup'
 export default {
-  name: 'Status',
+  name: 'Topup',
   components: {
-    StatusComp
+    TopupComp
   }
 }
 </script>

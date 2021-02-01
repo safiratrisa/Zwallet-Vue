@@ -13,15 +13,19 @@ export default new Vuex.Store({
     userID: null || localStorage.getItem('userID'),
     transactions: [],
     profile: [],
+    profileFriend: [],
     balance: [],
     receiver: {},
     transfer: [],
-    detailReceiver: [],
+    // detailReceiver: [],
     statusId: [],
     status: [],
     successUpdate: '',
     failedUpdate: '',
-    phone: []
+    phone: [],
+    phoneTotal: {},
+    pagination: null,
+    paginationTrans: null
   },
   mutations: {
     SET_USER (state, payload) {
@@ -34,6 +38,9 @@ export default new Vuex.Store({
     SET_PROFILE (state, payload) {
       state.profile = payload
     },
+    SET_PROFILE_FRIEND (state, payload) {
+      state.profileFriend = payload
+    },
     SET_BALANCE (state, payload) {
       state.balance = payload
     },
@@ -43,26 +50,42 @@ export default new Vuex.Store({
     SET_TRANSFER (state, payload) {
       state.transfer = payload
     },
-    SET_DETAIL_RECEIVER (state, payload) {
-      state.detailReceiver = payload
-    },
+    // SET_DETAIL_RECEIVER (state, payload) {
+    //   state.detailReceiver = payload
+    // },
     SET_STATUS_ID (state, payload) {
       state.statusId = payload
     },
     SET_STATUS (state, payload) {
       state.status = payload
     },
-    SET_SUCCESS_UPDATE (state, payload) {
-      state.successUpdate = payload
-    },
-    SET_FAILED_UPDATE (state, payload) {
-      state.failedUpdate = payload
-    },
     SET_PHONE (state, payload) {
       state.phone = payload
     },
+    SET_PHONE_TOTAL (state, payload) {
+      state.phoneTotal = payload
+    },
     REMOVE_TOKEN (state) {
       state.token = null
+      state.transactions = []
+      state.profile = []
+      state.balance = []
+      state.receiver = {}
+      state.transfer = []
+      state.detailReceiver = []
+      state.statusId = []
+      state.status = []
+      state.successUpdate = ''
+      state.failedUpdate = ''
+      state.phone = []
+      state.user = {}
+      state.userID = null
+    },
+    SET_PAGINATION (state, payload) {
+      state.pagination = payload
+    },
+    SET_PAGINATION_TRANS (state, payload) {
+      state.paginationTrans = payload
     }
   },
   actions: {
@@ -72,10 +95,8 @@ export default new Vuex.Store({
           .then((res) => {
             localStorage.setItem('token', res.data.result.token)
             localStorage.setItem('userID', res.data.result.id)
-            console.log(res.data.result)
             context.commit('SET_USER', res.data.result)
             context.dispatch('interceptorRequest')
-            // axios.defaults.headers.common.Authorization = `Bearer ${res.data.result.token}`
             resolve(res.data.result)
           })
           .catch((err) => {
@@ -83,13 +104,14 @@ export default new Vuex.Store({
           })
       })
     },
-    register ({ commit, context }, { username, email, password }) {
+    register ({ commit, context }, { username, email, password, pin }) {
       return new Promise((resolve, reject) => {
         axios.post(`${process.env.VUE_APP_SERVICE_API}/users/register`, {
           username: username,
           email: email,
           password: password,
-          emailto: 'trisa.tsh@gmail.com'
+          pin: pin,
+          emailto: email
         })
           .then((res) => {
             resolve(res.data.result)
@@ -101,9 +123,10 @@ export default new Vuex.Store({
     },
     getTransactions (context, payload) {
       return new Promise((resolve, reject) => {
-        axios.get(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/transactions-history?type=DESC`)
+        axios.get(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/transactions-history?sort=${payload.sort}&page=${payload.noPage}&limit=${payload.limit}`)
           .then((res) => {
-            context.commit('SET_TRANSACTIONS', res.data.result)
+            context.commit('SET_TRANSACTIONS', res.data.result.transactions)
+            context.commit('SET_PAGINATION_TRANS', res.data.result.pagination)
             resolve(res.data.result)
           })
           .catch((err) => {
@@ -122,18 +145,15 @@ export default new Vuex.Store({
       })
     },
     logout (context) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('userID')
-      localStorage.removeItem('PhoneDeleteId')
-      localStorage.removeItem('idTransfer')
-      localStorage.removeItem('TransferStatusId')
+      context.commit('REMOVE_TOKEN')
+      localStorage.clear()
     },
     interceptorResponse (context) {
       axios.interceptors.response.use(function (response) {
         return response
       }, function (err) {
         if (err.response.status === 401) {
-          if (err.response.data.err.message === 'Invalid Token') {
+          if (err.response.data.err.message === 'Invalid Token' || err.response.data.err.message === 'Token Expired') {
             localStorage.removeItem('token')
             localStorage.removeItem('userID')
             localStorage.removeItem('PhoneDeleteId')
@@ -142,27 +162,27 @@ export default new Vuex.Store({
             context.commit('REMOVE_TOKEN')
             router.push('/auth/login')
           }
-        } else if (err.response.data.err.message === 'Token Expired') {
-          localStorage.removeItem('token')
-          localStorage.removeItem('userID')
-          localStorage.removeItem('PhoneDeleteId')
-          localStorage.removeItem('idTransfer')
-          localStorage.removeItem('TransferStatusId')
-          context.commit('REMOVE_TOKEN')
-          router.push('/auth/login')
         }
         return Promise.reject(err)
       })
     },
     getProfile (context, payload) {
       return new Promise((resolve, reject) => {
-        console.log('abcd')
         axios.get(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/profile`)
           .then((res) => {
-            console.log('abcd')
-            console.log(res.data.result[0])
-            console.log(localStorage.getItem('userID'))
             context.commit('SET_PROFILE', res.data.result[0])
+            resolve(res.data.result[0])
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
+    getFriendProfile (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('idTransfer')}/profile`)
+          .then((res) => {
+            context.commit('SET_PROFILE_FRIEND', res.data.result[0])
             resolve(res.data.result[0])
           })
           .catch((err) => {
@@ -172,9 +192,10 @@ export default new Vuex.Store({
     },
     getReceiver (context, payload) {
       return new Promise((resolve, reject) => {
-        axios.get(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/receiver?search=`)
+        axios.get(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/friends?firstname=${payload.search}&page=${payload.noPage}`)
           .then((res) => {
-            context.commit('SET_RECEIVER', res.data.result)
+            context.commit('SET_RECEIVER', res.data.result.users)
+            context.commit('SET_PAGINATION', res.data.result.pagination)
             resolve(res.data.result)
           })
           .catch((err) => {
@@ -186,7 +207,8 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.get(`${process.env.VUE_APP_SERVICE_API}/phone/${localStorage.getItem('userID')}/user`)
           .then((res) => {
-            context.commit('SET_PHONE', res.data.result)
+            context.commit('SET_PHONE', res.data.result.phones)
+            context.commit('SET_PHONE_TOTAL', res.data.result.total)
             resolve(res.data.result)
           })
           .catch((err) => {
@@ -196,12 +218,8 @@ export default new Vuex.Store({
     },
     getBalance (context, payload) {
       return new Promise((resolve, reject) => {
-        console.log('abcd')
         axios.get(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/balance`)
           .then((res) => {
-            console.log('abcd')
-            console.log(res.data.result[0])
-            console.log(localStorage.getItem('userID'))
             context.commit('SET_BALANCE', res.data.result[0])
             resolve(res.data.result[0])
           })
@@ -210,21 +228,18 @@ export default new Vuex.Store({
           })
       })
     },
-    getDetailReceiver (context, payload) {
-      return new Promise((resolve, reject) => {
-        console.log('abcd')
-        axios.get(`${process.env.VUE_APP_SERVICE_API}/receiver/${localStorage.getItem('idTransfer')}`)
-          .then((res) => {
-            console.log('abcd')
-            console.log(res.data.result[0])
-            context.commit('SET_DETAIL_RECEIVER', res.data.result[0])
-            resolve(res.data.result[0])
-          })
-          .catch((err) => {
-            reject(err)
-          })
-      })
-    },
+    // getDetailReceiver (context, payload) {
+    //   return new Promise((resolve, reject) => {
+    //     axios.get(`${process.env.VUE_APP_SERVICE_API}/receiver/${localStorage.getItem('idTransfer')}`)
+    //       .then((res) => {
+    //         context.commit('SET_DETAIL_RECEIVER', res.data.result[0])
+    //         resolve(res.data.result[0])
+    //       })
+    //       .catch((err) => {
+    //         reject(err)
+    //       })
+    //   })
+    // },
     deletePhone (context, payload) {
       return new Promise((resolve, reject) => {
         axios.delete(`${process.env.VUE_APP_SERVICE_API}/phone/${localStorage.getItem('PhoneDeleteId')}`)
@@ -236,13 +251,12 @@ export default new Vuex.Store({
           })
       })
     },
-    insertTransfer ({ commit, context }, { amountOut, notes }) {
+    insertTransfer ({ context }, { amountOut, notes, pin }) {
       return new Promise((resolve, reject) => {
-        axios.post(`${process.env.VUE_APP_SERVICE_API}/transactions/transfer`, {
+        axios.post(`${process.env.VUE_APP_SERVICE_API}/users/gotransfer/${localStorage.getItem('userID')}/${localStorage.getItem('idTransfer')}`, {
           amountOut: amountOut,
           notes: notes,
-          accountid_transactions: localStorage.getItem('userID'),
-          transferto: localStorage.getItem('idTransfer')
+          pin: pin
         })
           .then((res) => {
             resolve(res.data.result)
@@ -252,7 +266,7 @@ export default new Vuex.Store({
           })
       })
     },
-    insertPhone ({ commit, context }, { phoneNumber }) {
+    insertPhone ({ context }, { phoneNumber }) {
       return new Promise((resolve, reject) => {
         axios.post(`${process.env.VUE_APP_SERVICE_API}/phone`, {
           phoneNumber: phoneNumber,
@@ -268,13 +282,11 @@ export default new Vuex.Store({
     },
     getTransferStatus (context, payload) {
       return new Promise((resolve, reject) => {
-        console.log('abcd')
         axios.get(`${process.env.VUE_APP_SERVICE_API}/transactions/status`)
           .then((res) => {
-            localStorage.setItem('TransferStatusId', res.data.result[0].lastId)
-            axios.get(`http://localhost:5000/transactions/${localStorage.getItem('TransferStatusId')}`)
+            localStorage.setItem('TransferStatusId', res.data.result[0].lastId - 1)
+            axios.get(`${process.env.VUE_APP_SERVICE_API}/transactions/${localStorage.getItem('TransferStatusId')}`)
               .then((res) => {
-                console.log(res.data.result[0])
                 context.commit('SET_STATUS', res.data.result[0])
                 resolve(res.data.result[0])
               })
@@ -287,36 +299,41 @@ export default new Vuex.Store({
           })
       })
     },
-    updatePassword ({ commit, context }, { password, newPassword, reenterPassword }) {
+    updatePassword ({ context }, { password, newPassword, reenterPassword }) {
       return new Promise((resolve, reject) => {
-        console.log('dimana errornya?')
         axios.put(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/updatepassword`, {
           password: password,
           newPassword: newPassword,
           reenterPassword: reenterPassword
         })
           .then((res) => {
-            console.log(res.data.result.message)
-            context.commit('SET_SUCCESS_UPDATE', res.data.result.message)
             resolve(res.data.result)
-            alert('password berhasil diupdate')
           })
           .catch((err) => {
-            console.log(err.response.data.err.message)
-            alert(err.response.data.err.message)
-            context.commit('SET_FAILED_UPDATE', err.response.data.err.message)
             reject(err)
           })
       })
     },
-    updateFirstName ({ commit, context }, { firstname }) {
+    updatePin ({ context }, { pin, newpin }) {
+      return new Promise((resolve, reject) => {
+        axios.put(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/updatepin`, {
+          pin: pin,
+          newPin: newpin
+        })
+          .then((res) => {
+            resolve(res.data.result)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
+    updateFirstName ({ context }, { firstname }) {
       return new Promise((resolve, reject) => {
         axios.put(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/updatefirstname`, {
           firstname: firstname
         })
           .then((res) => {
-            console.log(res.data.result.message)
-            context.commit('SET_SUCCESS_UPDATE', res.data.result.message)
             resolve(res.data.result.message)
           })
           .catch((err) => {
@@ -324,7 +341,35 @@ export default new Vuex.Store({
           })
       })
     },
-    updatePhone ({ commit, context }, { mainPhone }) {
+    forgotPassword ({ context }, { email }) {
+      return new Promise((resolve, reject) => {
+        axios.put(`${process.env.VUE_APP_SERVICE_API}/users/reset`, {
+          email: email
+        })
+          .then((res) => {
+            resolve(res.data.result.message)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
+    resetPassword ({ context }, { code, newPassword, reenterPassword }) {
+      return new Promise((resolve, reject) => {
+        axios.put(`${process.env.VUE_APP_SERVICE_API}/users/resetpassword`, {
+          reset: code,
+          newPassword: newPassword,
+          reenterPassword: reenterPassword
+        })
+          .then((res) => {
+            resolve(res.data.result.message)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
+    updatePhone ({ context }, { mainPhone }) {
       return new Promise((resolve, reject) => {
         axios.put(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/updatephone`, {
           mainPhone: mainPhone
@@ -339,26 +384,21 @@ export default new Vuex.Store({
     },
     updateImage (context, file) {
       return new Promise((resolve, reject) => {
-        console.log('kebaca?')
         axios.put(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/updateimage`, file, { headers: { 'Content-Type': 'multipart/form-data' } })
           .then((res) => {
-            alert('uupdate berhasil')
-            resolve(res.data.result)
+            resolve(res)
           })
           .catch((err) => {
-            alert(err.response.data.err.message)
             reject(err)
           })
       })
     },
-    updateLastName ({ commit, context }, { lastname }) {
+    updateLastName ({ context }, { lastname }) {
       return new Promise((resolve, reject) => {
         axios.put(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/updatelastname`, {
           lastname: lastname
         })
           .then((res) => {
-            console.log(res.data.result.message)
-            context.commit('SET_SUCCESS_UPDATE', res.data.result.message)
             resolve(res.data.result.message)
           })
           .catch((err) => {
@@ -366,14 +406,12 @@ export default new Vuex.Store({
           })
       })
     },
-    updateEmail ({ commit, context }, { email }) {
+    updateEmail ({ context }, { email }) {
       return new Promise((resolve, reject) => {
         axios.put(`${process.env.VUE_APP_SERVICE_API}/users/${localStorage.getItem('userID')}/updateemail`, {
           email: email
         })
           .then((res) => {
-            console.log(res.data.result.message)
-            context.commit('SET_SUCCESS_UPDATE', res.data.result.message)
             resolve(res.data.result.message)
           })
           .catch((err) => {
@@ -398,8 +436,14 @@ export default new Vuex.Store({
     getProfile (state) {
       return state.profile
     },
+    getProfileFriend (state) {
+      return state.profileFriend
+    },
     getPhone (state) {
       return state.phone
+    },
+    getPhoneTotal (state) {
+      return state.phoneTotal
     },
     getBalance (state) {
       return state.balance
@@ -407,9 +451,9 @@ export default new Vuex.Store({
     getReceiver (state) {
       return state.receiver
     },
-    getDetailReceiver (state) {
-      return state.detailReceiver
-    },
+    // getDetailReceiver (state) {
+    //   return state.detailReceiver
+    // },
     getTransferStatusId (state) {
       return state.statusId
     },
@@ -421,6 +465,12 @@ export default new Vuex.Store({
     },
     getFailedUpdate (state) {
       return state.failedUpdate
+    },
+    getPagination (state) {
+      return state.pagination
+    },
+    getPaginationTrans (state) {
+      return state.paginationTrans
     }
   },
   modules: {

@@ -1,27 +1,40 @@
 <template>
-<div class="aside1">
-    <nav class="navbar">
-    <ul>
-        <li>
-            <router-link to="home" exact tag="li"><a class="a-dashboard"><img src="../../assets/img/grid.png" alt=""><span id="dashboard">Dashboard</span></a></router-link>
-        </li>
-        <li>
-            <router-link to="receiver" exact tag="li"><a class="a-transfer"><img src="../../assets/img/arrow-up.png" alt=""><span id="transfer">Transfer</span></a></router-link>
-        </li>
-        <li>
-            <router-link to="topup" exact tag="li"><a class="a-topup"><img src="../../assets/img/plus.png" alt=""><span id="topup">Top Up</span></a></router-link>
-        </li>
-        <li>
-            <router-link to="personal" exact tag="li"><a class="a-profile"><img src="../../assets/img/user.png" alt=""><span id="profile">Profile</span></a></router-link>
-        </li>
-        <li class="log-out">
-            <!-- <button @click.prevent="logout()"></button> -->
-            <div @click.prevent="handlelogout()"><a class="a-logout"><img src="../../assets/img/log-out.png" alt=""><span id="logout">Logout</span></a></div>
-            <!-- <router-link to="/auth/login" exact tag="li" ><a class="a-logout"><img src="../../assets/img/log-out.png" alt=""><span id="logout">Logout</span></a></router-link> -->
-        </li>
-    </ul>
-</nav>
-</div>
+  <div class="aside1">
+    <div class="navbar">
+      <div class="up">
+        <div class="option" @click.prevent="toDashboard">
+          <div class="box">
+            <i class="fas fa-home fa-lg"></i>
+          </div>
+          <p id="dashboard">Dashboard</p>
+        </div>
+        <div class="option" @click.prevent="toTransfer">
+          <div class="box">
+            <i class="fas fa-arrow-up fa-lg"></i>
+          </div>
+          <p id="transfer">Transfer</p>
+        </div>
+        <div class="option" @click.prevent="toTopup">
+          <div class="box">
+            <i class="fas fa-plus fa-lg"></i>
+          </div>
+          <p id="topup">Top Up</p>
+        </div>
+        <div class="option" @click.prevent="toProfile">
+          <div class="box">
+            <i class="fas fa-user fa-lg"></i>
+          </div>
+          <p id="profile">Profile</p>
+        </div>
+        <div class="option" @click.prevent="handlelogout">
+          <div class="box">
+            <i class="fas fa-sign-out-alt fa-lg"></i>
+          </div>
+          <p id="logout">Logout</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -32,161 +45,152 @@ export default {
     ...mapActions({ logout: 'logout' }),
     handlelogout () {
       this.logout()
-      this.$router.push('/main/home')
+      this.$router.push('/auth/login')
+    },
+    toDashboard () {
+      this.$router.push('home').catch(error => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error
+        }
+      })
+    },
+    toTransfer () {
+      this.$router.push('receiver').catch(error => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error
+        }
+      })
+    },
+    toProfile () {
+      this.$router.push('personal').catch(error => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error
+        }
+      })
+    },
+    toTopup () {
+      this.$router.push('topup').catch(error => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error
+        }
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-
-li a {
-    text-decoration: none;
-}
-.aside1 {
-    /* border:2px solid black; */
-    margin-bottom: 19px;
-    width: 270px;
-    margin-right: 2%;
-    position: relative;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-    border-radius: 25px;
-    padding: 0;
+.box{
+  padding-top: 1%;
+  width: 30px;
+  height: 30px;
+  margin-right: 5%;
+  margin-left: 5%;
 }
 .navbar {
-    padding-left: 0;
-    position: relative;
-    width: 100%;
-    padding: 0%;
-    margin-top: 20%;
-    /* height:100%; */
+  padding: 0;
 }
-
-ul {
-    padding-left: 0;
-    /* position: absolute; */
-    /* top: 3%; */
-    font-weight: bold;
-    font-size: 18px;
-    list-style: none;
-    width: 100%;
-    /* height: 100%; */
-    /* padding: 0; */
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
+.option:hover {
+  border-left: 5px solid #6379F4;
 }
-
-li {
-    padding-left: 0;
-    position: relative;
-    width: 100%;
-    margin-bottom: 0%;
-    margin-left: 0;
-    margin-bottom: 10%;
+.option:hover .box i {
+  color: #6379F4;
 }
-
-nav ul li a{
-    /* border:2px solid black; */
-    width: 100%;
-    padding-left: 10%;
+.option:hover #transfer, .option:hover #topup, .option:hover #profile, .option:hover #logout, .option:hover #dashboard {
+  color: #6379F4;
+  font-weight: 800;
 }
-
-.log-out {
-    margin-top: 70%;
+i {
+  color :rgba(58, 61, 66, 0.8)
 }
-
-/* .a-dashboard {
-    height: 100%;
-    width: 100%;
-    border-left: 5px solid #6379F4;
-} */
-
-/* #dashboard, #transfer, #topup, #profile, #logout, #dashboard {
-    padding-left: 0;
-    margin-left: 10px;
-} */
-
-/* #dashboard {
-    padding-left: 0;
-    font-weight: bold;
-    font-size: 18px;
-    color: #6379F4;
-    width: 100%;
-    height: 100%;
-} */
+.up {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.option{
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10%;
+  cursor: pointer;
+  padding-top: 10px;
+}
+.aside1 {
+  height: 100%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 25px;
+  overflow: hidden;
+}
+.navbar {
+  height: 100%;
+}
 
 #transfer, #topup, #profile, #logout, #dashboard {
-    margin-left: 10px;
-    padding-left: 0;
-    font-weight: normal;
-    font-size: 18px;
-    color: rgba(58, 61, 66, 0.8);
+  margin-left: 10px;
+  padding-left: 0;
+  font-weight: normal;
+  font-size: 18px;
+  color: rgba(58, 61, 66, 0.8);
 }
 
 @media screen and (max-width: 1199px) {
-    .navbar {
-        margin-top: 0;
-    }
-    .aside1 {
-        flex-grow: 1;
-        margin-left: 0;
-        margin-right: 0;
-        height: 50px;
-        margin-bottom: 10px;
-    }
-    .log-out {
-        margin-top:0%;
-    }
-
-    ul {
-        /* border: 2px solid black; */
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: row;
-    }
-    .a-dashboard {
-        margin: 0;
-        /* padding: 0; */
-        /* border: 2px solid black; */
-        border-left: 0;
-        border-bottom: 5px solid #6379F4;
-    }
-
-    li {
-        margin: 0;
-        padding: 0;
-        /* border: 2px solid black; */
-        /* width:20%; */
-        display: flex;
-        flex-direction: column;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    a {
-        margin: 0;
-        padding: 0;
-        /* border: 2px solid black; */
-        /* padding-top: 6%; */
-        padding-left: 5%;
-        height: 100%;
-    }
+  .option {
+    margin: 0;
+    padding-top: 1%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .option:hover {
+    border-left: none;
+  border-bottom: 5px solid #6379F4;
+}
+  .navbar {
+    flex-direction: row;
+    justify-content: left;
+  }
+  .aside1 {
+    width: 100%;
+    padding: 0;
+  }
+  .up {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .box{
+  margin-right: 0%;
+  margin-left: 0%;
+}
 }
 
 @media screen and (max-width: 991px) {
-    #dashboard, #transfer, #topup, #profile, #logout {
-        display: none;
-    }
-    nav ul li a{
-        padding-left: 30%;
-    }
-    ul {
-        top: 5%;
-    }
+  #dashboard, #transfer, #topup, #profile, #logout {
+    display: none;
+  }
+  .option {
+    justify-content: center;
+    align-items: center;
+  }
+  .box{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
-
+}
+@media screen and (max-width: 991px) {
+  #dashboard, #transfer, #topup, #profile, #logout {
+    display: none;
+  }
+  .option {
+    justify-content: center;
+    align-items: center;
+  }
+}
 </style>

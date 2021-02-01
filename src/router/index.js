@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Auth from '../views/auth/index.vue'
+import Verify from '../views/verify.vue'
 import Login from '../views/auth/login/index.vue'
+import Front from '../views/Front/index.vue'
 import Register from '../views/auth/register/index.vue'
+import ForgotPass from '../views/auth/forgotpass/index.vue'
+import ResetPass from '../views/auth/resetpass/index.vue'
 import Main from '../views/main/index.vue'
 import Home from '../views/main/home/index.vue'
 import Receiver from '../views/main/receiver/index.vue'
@@ -13,14 +17,26 @@ import Transfer from '../views/main/Transfer/index.vue'
 import Status from '../views/main/status/index.vue'
 import Password from '../views/main/password/index.vue'
 import store from '../store/index'
-import ProfileChanged from '../views/main/profile2/index.vue'
 import managePhone from '../views/main/managePhone/managePhone.vue'
-import managePhoneChange from '../views/main/managePhoneChange/index.vue'
 import Addphone from '../views/main/addphone/addphone.vue'
+import Topup from '../views/main/topup/index.vue'
+import Changepin from '../views/main/changepin/index.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    name: 'front',
+    component: Front,
+    meta: { goLogin: true, title: 'Front Page' }
+  },
+  {
+    path: '/verify',
+    name: 'Verify',
+    component: Verify,
+    meta: { requiresVisitor: true, title: 'Verify' }
+  },
   {
     path: '/auth',
     name: 'Auth',
@@ -30,13 +46,25 @@ const routes = [
         path: 'login',
         name: 'Login',
         component: Login,
-        meta: { requiresVisitor: true }
+        meta: { requiresVisitor: true, title: 'Login' }
       },
       {
         path: 'register',
         name: 'Register',
         component: Register,
-        meta: { requiresVisitor: true }
+        meta: { requiresVisitor: true, title: 'Register' }
+      },
+      {
+        path: 'forgotpass',
+        name: 'ForgotPass',
+        component: ForgotPass,
+        meta: { requiresVisitor: true, title: 'Forgot Password' }
+      },
+      {
+        path: 'resetpass',
+        name: 'ResetPass',
+        component: ResetPass,
+        meta: { requiresVisitor: true, title: 'Reset Password' }
       }
     ]
   },
@@ -49,73 +77,73 @@ const routes = [
         path: 'home',
         name: 'Home',
         component: Home,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Dashboard' }
       },
       {
         path: 'receiver',
         name: 'Receiver',
         component: Receiver,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Search Receiver' }
       },
       {
         path: 'personal',
         name: 'Personal',
         component: Personal,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Personal' }
       },
       {
         path: 'history',
         name: 'History',
         component: History,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'History' }
       },
       {
         path: 'profile',
         name: 'Profile',
         component: Profile,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'profile-changed',
-        name: 'ProfileChanged',
-        component: ProfileChanged,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Profile' }
       },
       {
         path: 'receiver-transfer',
         name: 'Transfer',
         component: Transfer,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Transfer' }
       },
       {
         path: 'receiver-transfer-status',
         name: 'Status',
         component: Status,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Status' }
       },
       {
         path: 'change-password',
         name: 'Password',
         component: Password,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Change Password' }
       },
       {
         path: 'manage-phone',
         name: 'managePhone',
         component: managePhone,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'manage-phone-change',
-        name: 'managePhoneChange',
-        component: managePhoneChange,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Manage Phone' }
       },
       {
         path: 'addphone',
         name: 'Addphone',
         component: Addphone,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, title: 'Add Phone' }
+      },
+      {
+        path: 'topup',
+        name: 'Topup',
+        component: Topup,
+        meta: { requiresAuth: true, title: 'Top Up' }
+      },
+      {
+        path: 'changepin',
+        name: 'Changepin',
+        component: Changepin,
+        meta: { requiresAuth: true, title: 'Change PIN' }
       }
     ]
   }
@@ -128,7 +156,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('pindah halaman')
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!store.getters.isLogin) {
       next({
@@ -145,8 +172,10 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
-  } else {
-    next()
+  } else if (to.matched.some(record => record.meta.goLogin)) {
+    next({
+      path: '/auth/login'
+    })
   }
 })
 

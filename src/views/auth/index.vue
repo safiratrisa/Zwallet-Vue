@@ -121,12 +121,14 @@ export default {
     }
 }
 
-@media screen and (max-width: 840px) {
+@media screen and (max-width: 888px) {
     .leftside {
         display: none;
     }
     .rightside {
         width: 100vw;
+        height: 100%;
+        padding-bottom: 10%;
     }
 }
 </style>
