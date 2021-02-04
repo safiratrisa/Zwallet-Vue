@@ -32,6 +32,7 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 export default {
   name: 'ResetPass',
+  title: 'Reset Password',
   data () {
     return {
       reenterPassword: '',
@@ -65,11 +66,8 @@ export default {
       }
       this.resetPassword(payload)
         .then(() => {
-          this.code = ''
-          this.newPassword = ''
-          this.reenterPassword = ''
+          this.$router.push('/auth/login')
           this.alertSuccess({ title: 'Success!', text: 'Please login with your New Password!' })
-          this.$router.push('login')
         })
         .catch((err) => {
           if (err.response.data.err.message === 'Password tidak sama') {
@@ -128,6 +126,8 @@ button:hover {
 }
 
 input {
+    border: none;
+    outline: none;
     width: 100%;
     border-radius: none;
     border-bottom: 1px solid rgba(58, 61, 66, 0.6);
@@ -159,6 +159,7 @@ input {
     font-size: 16px;
     border-radius: 12px;
     border: 0px;
+    margin-bottom: 10%;
   }
 #forgot-pass {
     margin-top: 20px;
@@ -181,6 +182,10 @@ a {
     margin-top: 30px;
     text-align: center;
     text-decoration: none;
+}
+form {
+    border: 2px solid white;
+    height: 100%;
 }
 
 @media screen and (max-width: 1024px) {

@@ -1,7 +1,7 @@
 <template>
   <div v-content>
     <div class="search-title">Search Receiver</div>
-      <div class="box">
+      <div class="box-input">
         <i class="fa fa-search" aria-hidden="true"></i>
         <input type="text" v-model="search" placeholder="Search receiver here" @keyup='searchname'>
       </div>
@@ -40,6 +40,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Swal from 'sweetalert2'
 export default {
   name: 'SearchReceiverComp',
+  title: 'Search Receiver',
   data () {
     return {
       search: ''
@@ -107,11 +108,11 @@ export default {
   width: 100%;
   margin-top: 10%;
 } */
-.box  i {
+.box-input  i {
   font-size: 20px;
   color: #777;
 }
-.box  input{
+.box-input  input{
   height: 40px;
   border: none;
   outline: none;
@@ -126,7 +127,7 @@ export default {
   color: #3A3D42;
   margin-bottom: 2%;
 }
-.box{
+.box-input{
   width: 100%;
   min-height: 50px;
   border-radius: 12px;

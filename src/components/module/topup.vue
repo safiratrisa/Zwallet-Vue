@@ -40,6 +40,8 @@
 
 <script>
 export default {
+  name: 'TopUp',
+  title: 'Top Up'
 
 }
 </script>

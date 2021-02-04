@@ -66,6 +66,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 var numeral = require('numeral')
 export default {
   name: 'TransferComp',
+  title: 'Transfer',
   components: {
     VueNumeric,
     PincodeInput,

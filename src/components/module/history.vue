@@ -51,6 +51,7 @@ import moment from 'moment'
 var numeral = require('numeral')
 export default {
   name: 'TransactionContentComp',
+  title: 'History',
   data: function () {
     return {
       show: 'desc'

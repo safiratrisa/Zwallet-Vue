@@ -25,6 +25,7 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 export default {
   name: 'ForgotPass',
+  title: 'Forgot Password',
   data () {
     return {
       email: '',
@@ -105,6 +106,8 @@ button:hover {
 }
 
 input {
+    border: none;
+    outline: none;
     // border: none;
     width: 100%;
     border-radius: none;
@@ -138,6 +141,7 @@ input {
     font-size: 16px;
     border-radius: 12px;
     border: 0px;
+    margin-bottom: 10%;
   }
 #forgot-pass {
     margin-top: 20px;
@@ -161,6 +165,10 @@ a {
     margin-top: 30px;
     text-align: center;
     text-decoration: none;
+}
+form {
+    border: 2px solid white;
+    height: 100%;
 }
 
 @media screen and (max-width: 1024px) {

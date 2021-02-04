@@ -32,6 +32,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import Swal from 'sweetalert2'
 export default {
   name: 'Login',
+  title: 'Login',
   data () {
     return {
       email: '',
@@ -138,6 +139,8 @@ button:hover {
 }
 
 input {
+    border: none;
+    outline: none;
     width: 100%;
     border-radius: none;
     border-bottom: 1px solid rgba(58, 61, 66, 0.6);
@@ -191,6 +194,11 @@ a {
     margin-top: 30px;
     text-align: center;
     text-decoration: none;
+    margin-bottom: 10%;
+}
+form {
+    border: 2px solid white;
+    height: 100%;
 }
 
 @media screen and (max-width: 1024px) {

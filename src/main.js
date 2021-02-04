@@ -4,6 +4,8 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import Vuelidate from 'vuelidate'
+import titleMixin from './mixins/titleMixin'
+Vue.mixin(titleMixin)
 // import VueNumerals from 'vue-numerals'
 
 Vue.config.productionTip = false

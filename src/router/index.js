@@ -29,13 +29,13 @@ const routes = [
     path: '/',
     name: 'front',
     component: Front,
-    meta: { goLogin: true, title: 'Front Page' }
+    meta: { goLogin: true }
   },
   {
     path: '/verify',
     name: 'Verify',
     component: Verify,
-    meta: { requiresVisitor: true, title: 'Verify' }
+    meta: { requiresVisitor: true }
   },
   {
     path: '/auth',
@@ -46,25 +46,25 @@ const routes = [
         path: 'login',
         name: 'Login',
         component: Login,
-        meta: { requiresVisitor: true, title: 'Login' }
+        meta: { requiresVisitor: true }
       },
       {
         path: 'register',
         name: 'Register',
         component: Register,
-        meta: { requiresVisitor: true, title: 'Register' }
+        meta: { requiresVisitor: true }
       },
       {
         path: 'forgotpass',
         name: 'ForgotPass',
         component: ForgotPass,
-        meta: { requiresVisitor: true, title: 'Forgot Password' }
+        meta: { requiresVisitor: true }
       },
       {
         path: 'resetpass',
         name: 'ResetPass',
         component: ResetPass,
-        meta: { requiresVisitor: true, title: 'Reset Password' }
+        meta: { requiresVisitor: true }
       }
     ]
   },
@@ -77,73 +77,73 @@ const routes = [
         path: 'home',
         name: 'Home',
         component: Home,
-        meta: { requiresAuth: true, title: 'Dashboard' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'receiver',
         name: 'Receiver',
         component: Receiver,
-        meta: { requiresAuth: true, title: 'Search Receiver' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'personal',
         name: 'Personal',
         component: Personal,
-        meta: { requiresAuth: true, title: 'Personal' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'history',
         name: 'History',
         component: History,
-        meta: { requiresAuth: true, title: 'History' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'profile',
         name: 'Profile',
         component: Profile,
-        meta: { requiresAuth: true, title: 'Profile' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'receiver-transfer',
         name: 'Transfer',
         component: Transfer,
-        meta: { requiresAuth: true, title: 'Transfer' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'receiver-transfer-status',
         name: 'Status',
         component: Status,
-        meta: { requiresAuth: true, title: 'Status' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'change-password',
         name: 'Password',
         component: Password,
-        meta: { requiresAuth: true, title: 'Change Password' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'manage-phone',
         name: 'managePhone',
         component: managePhone,
-        meta: { requiresAuth: true, title: 'Manage Phone' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'addphone',
         name: 'Addphone',
         component: Addphone,
-        meta: { requiresAuth: true, title: 'Add Phone' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'topup',
         name: 'Topup',
         component: Topup,
-        meta: { requiresAuth: true, title: 'Top Up' }
+        meta: { requiresAuth: true }
       },
       {
         path: 'changepin',
         name: 'Changepin',
         component: Changepin,
-        meta: { requiresAuth: true, title: 'Change PIN' }
+        meta: { requiresAuth: true }
       }
     ]
   }

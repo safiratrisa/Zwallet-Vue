@@ -9,17 +9,17 @@
             <form @submit.prevent="tes" class="form-box">
                 <div >
                     <i class="fa fa-envelope-o"></i>
-                     <input type="text" v-model.trim="$v.username.$model" placeholder="Enter your username" :class="{'is-invalid': validationStatus($v.username)}" style="margin-top:10%">
+                     <input type="text" v-model.trim="$v.username.$model" placeholder="Enter your username" :class="{'is-invalid': validationStatus($v.username)}">
                      <div v-if="!$v.username.required" class="invalid-feedback">Username can not be empty</div>
                 </div>
                 <div>
                     <i class="fa fa-envelope-o"></i>
-                    <input type="text" v-model.trim="$v.email.$model" placeholder="Enter your email" :class="{'is-invalid': validationStatus($v.email)}" style="margin-top:10%">
+                    <input type="text" v-model.trim="$v.email.$model" placeholder="Enter your email" :class="{'is-invalid': validationStatus($v.email)}">
                     <div v-if="!$v.email.required" class="invalid-feedback">Email can not be empty</div>
                     <div v-if="!$v.email.email" class="invalid-feedback">Email is invalid</div>
                 </div>
                 <div>
-                    <input type="password" v-model.trim="$v.password.$model" placeholder="Enter your password" :class="{'is-invalid': validationStatus($v.password)}" style="margin-top:10%">
+                    <input type="password" v-model.trim="$v.password.$model" placeholder="Enter your password" :class="{'is-invalid': validationStatus($v.password)}">
                     <div v-if="!$v.password.required" class="invalid-feedback">Password can not be empty</div>
                     <div v-if="!$v.password.minLength" class="invalid-feedback">You must have at least 6 letters</div>
                 </div>
@@ -67,6 +67,7 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 export default {
   name: 'SignUp',
+  title: 'Register',
   data () {
     return {
       username: '',
@@ -134,7 +135,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .det-signin:hover {
     color: #3855f7 !important;
     font-weight: 800;
@@ -238,6 +239,7 @@ input {
     width: 100%;
     border-radius: none;
     border-bottom: 1px solid rgba(58, 61, 66, 0.6);
+    margin-top: 5%;
 }
 .signup-btn {
     margin-top:20px;
@@ -304,6 +306,11 @@ a {
     margin-top: 30px;
     text-align: center;
     text-decoration: none;
+    margin-bottom: 10%;
+}
+form {
+    border: 2px solid white;
+    height: 100%;
 }
 
 @media screen and (max-width: 1155px) {

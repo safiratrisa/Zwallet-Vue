@@ -18,6 +18,7 @@ import Graphic from '../../../components/module/homeGraphic'
 import Transactions from '../../../components/module/homeTransactions'
 export default {
   name: 'Content',
+  title: 'Zwallet',
   components: {
     Balance,
     Graphic,

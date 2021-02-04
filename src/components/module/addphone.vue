@@ -18,6 +18,7 @@ import { mapActions } from 'vuex'
 import SweetAlert from '../../mixins/alert'
 export default {
   name: 'phoneNumberComp',
+  title: 'Add Phone',
   data () {
     return {
       phoneNumber: ''
@@ -68,7 +69,7 @@ button:hover {
 .form-box {
   width: 70%;
   color: rgba(58, 61, 66, 0.6);
-  margin: 0;
+  margin-top: 5%;
 }
 .input-box {
   width: 100%;

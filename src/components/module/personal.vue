@@ -39,6 +39,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import SweetAlert from '../../mixins/alert'
 export default {
   name: 'InformationComp',
+  title: 'Personal Information',
   mixins: [SweetAlert],
   data: function () {
     return {
@@ -55,7 +56,7 @@ export default {
     goPersonal () {
       this.$router.push('profile')
       Swal.fire({
-        text: 'if you wish to edit your profile information, click the pencil icon, input your new profile information, and press enter. '
+        text: 'If you wish to edit your profile information, click the pencil icon, input your new profile information, and press enter. '
       })
     },
     goPassword () {

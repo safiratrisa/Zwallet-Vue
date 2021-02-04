@@ -33,18 +33,13 @@ export default {
 <style lang="scss" scoped>
 .fullside {
     display: flex;
-    overflow: hidden;
-    position: relative;
-    height: 50%;
   }
   .rightside {
     background-color:white;
     width: 57%;
     height: 100vh;
-    position: relative;
   }
   .leftside {
-      height: 5%;
     background-color:#6379F4;
     width: 42%;
     min-width: 500px;
@@ -121,13 +116,22 @@ export default {
     }
 }
 
-@media screen and (max-width: 888px) {
+@media screen and (max-width: 965px) {
     .leftside {
         display: none;
     }
     .rightside {
         width: 100vw;
         height: 100%;
+        padding-bottom: 10%;
+    }
+}
+@media screen and (max-height: 678px) {
+    .leftside {
+        display: none;
+    }
+    .rightside {
+        width: 100%;
         padding-bottom: 10%;
     }
 }

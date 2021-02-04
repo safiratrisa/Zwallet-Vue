@@ -58,6 +58,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 var numeral = require('numeral')
 export default {
   name: 'StatusComp',
+  title: 'Transfer Status',
   components: {
     Loading
   },
