@@ -94,5 +94,5 @@ Contributions are what make the open source community such an amazing place to b
 
 
 ## Related Project
-- [Ankasa Back-End](https://github.com/safiratrisa/New-Zwallet)
+- [Zwallet Back-End](https://github.com/safiratrisa/New-Zwallet)
 
