@@ -1,9 +1,4 @@
 <p align="center">
- <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-v2-green?style=for-the-badge"></a>
- <a href="https://getbootstrap.com/docs/4.6/getting-started/introduction"><img src="https://img.shields.io/badge/Bootstrap-v4-lightgreen?style=for-the-badge"></a>
-</p>
-
-<p align="center">
   <a href="https://github.com/ArbiNMaki/Ankasa-Frontend">
     <img src="./screenshots/1200px-Vue.js_Logo_2.svg.png"  width="200px" alt="Logo" width="80">
   </a>
@@ -32,8 +27,8 @@ Zwallet is a banking application built with the implementation of VueJs, NodeJs 
 
 ### Built With
 
-* [Vue v2](https://vuejs.org/v2)
-* [Bootstrap v4](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
+* [Vue](https://vuejs.org)
+* [Bootstrap](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
 
 
 <!-- GETTING STARTED -->
