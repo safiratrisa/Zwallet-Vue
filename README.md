@@ -52,7 +52,7 @@ VUE_APP_SERVICE_API = [YOUR_HOST_NAME]
 ```
 
 ## Project Demo
-https://zwallet-safiratrisaa.netlify.app/
+https://zwallet-trisa.netlify.app/
 
 <!-- ROADMAP -->
 ## Screenshots
