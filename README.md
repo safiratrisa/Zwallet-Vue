@@ -20,6 +20,7 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
 * [Screenshots](#screenshots)
+* [Contributing](#contributing)
 * [Related Project](#related-project)
 
 
