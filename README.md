@@ -34,12 +34,6 @@ Zwallet is a banking application built with the implementation of VueJs, NodeJs 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### Prerequisites
-
-Before going to the installation stage there are some software that must be installed first.
-
-* [NodeJs](https://nodejs.org/en/download/)
-
 ### Installation
 
 If you want to run this project locally, I recommend you to configure the [Back-End](https://github.com/safiratrisa/New-Zwallet) first before configuring this repo front-end.
